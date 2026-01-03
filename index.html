@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>USDT 在线支付与安全自查中心（2025）｜TRC20/ERC20/到账延迟/风控说明</title>
+  <meta name="description" content="一页搞懂 USDT 在线支付：TRC20/ERC20 怎么选、TXID 怎么查、Pending 未到账怎么处理、提现审核与风控常见原因，并附安全自查清单与常见问题 FAQ。">
+  <meta name="keywords" content="USDT,在线支付,TRC20,ERC20,TXID,Pending未到账,提现延迟,风控审核,USDT安全" />
+  <link rel="canonical" href="https://220219lol-cmd.github.io/seo22/" />
+  <style>
+    :root{
+      --bg:#071a12;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --text:#eaf7f0;
+      --muted:rgba(234,247,240,.72);
+      --green:#22c55e;
+      --green2:#16a34a;
+      --gold:#f4d07b;
+      --shadow:0 18px 45px rgba(0,0,0,.45);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 500px at 12% 0%, rgba(34,197,94,.28), transparent 55%),
+        radial-gradient(900px 420px at 88% 12%, rgba(244,208,123,.18), transparent 60%),
+        linear-gradient(180deg, #05130d 0%, #071a12 40%, #05130d 100%);
+      line-height:1.9;
+    }
+    a{color:inherit}
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 16px 70px}
+    .hero{
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .badge{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:6px 12px;border-radius:999px;
+      background:rgba(34,197,94,.14);
+      border:1px solid rgba(34,197,94,.35);
+      color:#d9ffe7;font-weight:900;font-size:12px;
+    }
+    h1{margin:12px 0 6px;font-size:28px;letter-spacing:.2px}
+    .sub{margin:0;color:var(--muted);max-width:980px}
+    .kpis{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:16px}
+    .kpi{
+      grid-column:span 4;
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      background:var(--panel);
+      padding:14px;
+    }
+    .kpi b{display:block;font-size:14px}
+    .kpi p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    @media(max-width:900px){.kpi{grid-column:span 12} h1{font-size:24px}}
+    .section{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+    }
+    .section h2{margin:0 0 10px;font-size:20px;color:#d9ffe7}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .card{
+      grid-column:span 6;
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      background:var(--panel);
+      padding:14px;
+    }
+    @media(max-width:900px){.card{grid-column:span 12}}
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card ul{margin:0;padding-left:18px;color:var(--muted)}
+    .card li{margin:6px 0}
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      margin-top:12px;
+      background:rgba(0,0,0,.16);
+    }
+    .table th,.table td{padding:12px 12px;text-align:left}
+    .table th{background:rgba(34,197,94,.10);font-size:13px}
+    .table td{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+    .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:999px;text-decoration:none;
+      font-weight:900;font-size:14px;
+      border:1px solid rgba(34,197,94,.35);
+      background:linear-gradient(90deg, rgba(34,197,94,.18), rgba(34,197,94,.06));
+      color:#eafff2;
+    }
+    .btn.primary{
+      border-color:transparent;
+      background:linear-gradient(90deg, var(--green), var(--green2));
+      color:#032012;
+      box-shadow:0 12px 30px rgba(34,197,94,.25);
+    }
+    .btn.gold{
+      border-color:rgba(244,208,123,.45);
+      background:linear-gradient(90deg, rgba(244,208,123,.22), rgba(244,208,123,.08));
+      color:#fff6dd;
+    }
+    .btn:hover{transform:translateY(-1px);transition:.15s}
+    details{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 14px;
+      background:rgba(0,0,0,.12);
+      margin-top:10px;
+    }
+    summary{cursor:pointer;font-weight:900}
+    .fine{margin-top:14px;color:rgba(234,247,240,.6);font-size:12px}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="badge">SEO22 · USDT 支付与安全自查中心</span>
+      <h1>USDT 在线支付与安全自查中心（2025）</h1>
+      <p class="sub">
+        你遇到的多数问题都能用同一套逻辑解决：<b>先看 TXID</b> → <b>再看确认数</b> → <b>最后看平台规则/风控</b>。
+        本页把 TRC20/ERC20、到账延迟、提现审核与安全自查整理成一套“可复制流程”，方便你随时对照。
+      </p>
+
+      <div class="kpis">
+        <div class="kpi"><b>优先级 1：TXID</b><p>没有 TXID 就没有链上证据；先把 TXID 保存好</p></div>
+        <div class="kpi"><b>优先级 2：确认数</b><p>链上确认不足属于正常等待；达标再看平台队列</p></div>
+        <div class="kpi"><b>优先级 3：规则/风控</b><p>入账阈值、流水要求、首次出款审核都会造成延迟</p></div>
+      </div>
+
+      <div class="btns">
+        <a class="btn primary" href="https://usdtonlinecasino.com/" target="_blank" rel="noopener">进入主站（教程总览）</a>
+        <a class="btn gold" href="https://usdtonlinecasino.com/usdt-payment-guide/" target="_blank" rel="noopener">USDT 支付教学</a>
+        <a class="btn" href="https://usdtonlinecasino.com/usdt-faq/" target="_blank" rel="noopener">USDT 常见问题 FAQ</a>
+        <a class="btn" href="https://usdtonlinecasino.com/usdt-news/" target="_blank" rel="noopener">USDT 最新资讯</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>1）TRC20 vs ERC20：网络选对，问题少一半</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>TRC20（Tron）更适合你：</h3>
+          <ul>
+            <li>你更在意手续费与到账体验（通常更友好）</li>
+            <li>你是新手，希望流程更稳定</li>
+            <li>平台给的地址为 TRC20（常见 T 开头）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>ERC20（Ethereum）更适合你：</h3>
+          <ul>
+            <li>你资金主要在以太坊生态内流转</li>
+            <li>平台只提供 ERC20 地址（常见 0x 开头）</li>
+            <li>你能接受拥堵时费用与延迟上升</li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="table">
+        <thead><tr><th>对比维度</th><th>TRC20</th><th>ERC20</th></tr></thead>
+        <tbody>
+          <tr><td>常见费用体验</td><td>通常更低</td><td>高峰期更高</td></tr>
+          <tr><td>到账速度体验</td><td>通常更顺滑</td><td>拥堵时更慢</td></tr>
+          <tr><td>常见地址格式</td><td>T…</td><td>0x…</td></tr>
+          <tr><td>典型风险点</td><td>链选错导致不到账</td><td>手续费低/拥堵导致 Pending</td></tr>
+        </tbody>
+      </table>
+
+      <div class="fine">提示：第一次大额建议先小额测试 + 保存 TXID。网络选错是最常见的“未到账”原因。</div>
+    </section>
+
+    <section class="section">
+      <h2>2）Pending / 未到账：最省时间的排查顺序</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Step A：先确认 TXID 是否存在</h3>
+          <ul>
+            <li>钱包/交易所转出记录里必须能找到 TXID</li>
+            <li>把 TXID、金额、链类型、收款地址截图保存</li>
+            <li>平台说处理了但不给 TXID：提高警惕</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Step B：确认链上状态（Success / Confirmed）</h3>
+          <ul>
+            <li>链上成功但平台未入账：通常是确认数阈值或平台队列</li>
+            <li>链上 Pending：拥堵/手续费低/未打包</li>
+            <li>链上失败：不要重复转账，先定位原因</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <table class="table">
+        <thead><tr><th>你看到的现象</th><th>可能原因</th><th>建议动作</th></tr></thead>
+        <tbody>
+          <tr><td>链上 Pending 很久</td><td>网络拥堵 / 手续费偏低</td><td>等待；必要时看钱包是否支持加速</td></tr>
+          <tr><td>链上 Confirmed 但平台没入账</td><td>确认数阈值 / 平台队列 / 风控审核</td><td>等待 30–60 分钟后提交 TXID 给客服</td></tr>
+          <tr><td>客服让你“再充值才能提现”</td><td>高风险信号</td><td>先停手，要求规则依据 + TXID 证明</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>3）安全自查清单（减少踩坑）</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>转账前（必须做）</h3>
+          <ul>
+            <li>确认网络：TRC20/ ERC20 与平台一致</li>
+            <li>核对地址：复制后再对照前 6 位/后 6 位</li>
+            <li>首次大额先小额测试</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>转账后（必须留证）</h3>
+          <ul>
+            <li>保存 TXID + 时间 + 金额 + 网络截图</li>
+            <li>链上已确认但未入账：提交 TXID 等待处理</li>
+            <li>规则不透明 / 不给凭证：谨慎追加资金</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="btns">
+        <a class="btn primary" href="https://usdtonlinecasino.com/usdt-payment-guide/" target="_blank" rel="noopener">主站：支付教学（更细）</a>
+        <a class="btn" href="https://usdtonlinecasino.com/usdt-faq/" target="_blank" rel="noopener">主站：FAQ（直接抄答案）</a>
+      </div>
+
+      <p class="fine">免责声明：本页为科普/教育用途，请遵守所在地法律与平台规则，自行评估风险。</p>
+    </section>
+
+    <section class="section">
+      <h2>4）FAQ（常见问题）</h2>
+      <details><summary>Q1：Pending 就是失败吗？</summary><p>不是。Pending 常见是确认数未完成或链拥堵。链上确认完成后再判断平台处理进度。</p></details>
+      <details><summary>Q2：链上成功了平台没入账怎么办？</summary><p>通常是确认数阈值或平台队列。准备 TXID、金额、链类型、收款地址截图，联系平台并等待处理。</p></details>
+      <details><summary>Q3：TRC20 和 ERC20 可以混着用吗？</summary><p>不可以。网络不一致是“不到账”的高发原因之一，务必按平台给的链类型发送。</p></details>
+      <details><summary>Q4：什么情况属于高风险信号？</summary><p>不给 TXID、规则反复变、要求“再充值才能提现/解锁出款”通常属于高风险信号，应先停手留证。</p></details>
+    </section>
+  </main>
+
+  <!-- FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Pending 就是失败吗？",
+        "acceptedAnswer":{"@type":"Answer","text":"不是。Pending 常见是确认数未完成或链拥堵。链上确认完成后再判断平台处理进度。"}},
+      {"@type":"Question","name":"链上成功了平台没入账怎么办？",
+        "acceptedAnswer":{"@type":"Answer","text":"通常是确认数阈值或平台队列。准备 TXID、金额、链类型、收款地址截图，联系平台并等待处理。"}},
+      {"@type":"Question","name":"TRC20 和 ERC20 可以混着用吗？",
+        "acceptedAnswer":{"@type":"Answer","text":"不可以。网络不一致是“不到账”的高发原因之一，务必按平台给的链类型发送。"}},
+      {"@type":"Question","name":"什么情况属于高风险信号？",
+        "acceptedAnswer":{"@type":"Answer","text":"不给 TXID、规则反复变、要求“再充值才能提现/解锁出款”通常属于高风险信号，应先停手留证。"}}
+    ]
+  }
+  </script>
+</body>
+</html>
